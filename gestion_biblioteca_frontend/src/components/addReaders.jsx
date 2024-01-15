@@ -1,18 +1,40 @@
 import { useState } from 'react'
-import { ChevronDownIcon } from '@heroicons/react/20/solid'
-import { Switch } from '@headlessui/react'
+import { Link ,useNavigate} from 'react-router-dom';
+import LectorService from '../services/LectorService';
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(' ')
 }
 
 export default function AddReaders() {
-  const [agreed, setAgreed] = useState(false)
 
-  const [readerType, setReaderType] = useState('asociado');
+  const [nombre,setNombre]=useState('');
+  const [apellido,setApellido]=useState('');
+  const [telefono,setTelefono]=useState('');
+  const [numero,setNumero]=useState(''); //el servidor se encargar de adm como cuil o nro socio 
+
+  const navigate = useNavigate ();
+  const [agreed, setAgreed] = useState(false)
+  const [readerType, setReaderType] = useState('ASC');
+
   const handleReaderTypeChange = (event) => {
     setReaderType(event.target.value);
+   // Limpiar los estados al cambiar el tipo de lector
+   setNumero('');
   };
+
+  const saveLector=(e)=>{
+    e.preventDefault();
+    const nombreCompleto = `${nombre} ${apellido}`;
+    const lector ={tipo:readerType,nombre:nombreCompleto,telefono,numero};
+    LectorService.createLector(lector).then((response)=>{
+            console.log(response.data);
+            alert(response.data);
+            navigate('/lectores');
+    }).catch(error=>{
+        console.log(error);
+    })
+  }
 
   return (
     
@@ -30,17 +52,17 @@ export default function AddReaders() {
         />
       </div>
       <div className="mx-auto max-w-2xl text-center">
-        <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">Agrega un nuevo lector</h2>
+        <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">Carga de un nuevo lector</h2>
         <p className="mt-2 text-lg leading-8 text-gray-600">
           complete todos los campos
         </p>
       </div>
-      <form action="#" method="POST" className="mx-auto mt-16 max-w-xl sm:mt-20">
+      <form  className="mx-auto mt-16 max-w-xl sm:mt-20">
 
         <div className="grid grid-cols-1 gap-x-8 gap-y-6 sm:grid-cols-2">
           <div>
             <label htmlFor="first-name" className="block text-sm font-semibold leading-6 text-gray-900">
-              First name
+              Nombre
             </label>
             <div className="mt-2.5">
               <input
@@ -48,6 +70,8 @@ export default function AddReaders() {
                 name="first-name"
                 id="first-name"
                 autoComplete="given-name"
+                value={nombre}
+                onChange={(e)=>setNombre(e.target.value)}
                 className="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
               />
             </div>
@@ -55,13 +79,15 @@ export default function AddReaders() {
 
           <div>
             <label htmlFor="last-name" className="block text-sm font-semibold leading-6 text-gray-900">
-              Last name
+               Apellido
             </label>
             <div className="mt-2.5">
               <input
                 type="text"
                 name="last-name"
                 id="last-name"
+                value={apellido}
+                onChange={(e)=>setApellido(e.target.value)}
                 autoComplete="family-name"
                 className="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
               />
@@ -77,25 +103,27 @@ export default function AddReaders() {
               id="reader-type"
               name="reader-type"
               value={readerType}
-              onChange={handleReaderTypeChange}
+              onChange={handleReaderTypeChange}  
               className="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
             >
-              <option value="asociado">Asociado</option>
-              <option value="no-asociado">No Asociado</option>
+              <option value="ASC">Asociado</option>
+              <option value="NO_ASC">No Asociado</option>
             </select>
           </div>
         </div>
 
           <div className="sm:col-span-2">
             <label htmlFor="nroSocio" className="block text-sm font-semibold leading-6 text-gray-900">
-              {readerType === 'asociado' ? 'Numero de socio' : 'Numero de CUIL'}
+              {readerType === 'ASC' ? 'Numero de socio' : 'Numero de CUIL'}
             </label>
             <div className="mt-2.5">
               <input
                 type="text"
-                name={readerType === 'asociado' ? 'nro_socio' : 'nro_cuil'}
-                id={readerType === 'asociado' ? 'socio' : 'cuil'}
+                name={readerType === 'ASC' ? 'nro_socio' : 'nro_cuil'}
+                id={readerType === 'ASC' ? 'socio' : 'cuil'}
                 autoComplete="organization"
+                value={numero} 
+                onChange={(e) => setNumero(e.target.value)}
                 className="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
               />
             </div>
@@ -103,13 +131,15 @@ export default function AddReaders() {
      
           <div className="sm:col-span-2">
             <label htmlFor="phone-number" className="block text-sm font-semibold leading-6 text-gray-900">
-              Phone number
+              Telefono
             </label>
             <div className="mt-2.5">
               <input
                 type="tel"
                 name="phone-number"
                 id="phone-number"
+                value={telefono}
+                onChange={(e)=>setTelefono(e.target.value)}
                 autoComplete="tel"
                 className="block w-full rounded-md border-0 px-3.5 py-2  text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
               />
@@ -122,16 +152,11 @@ export default function AddReaders() {
           <button
             type="submit"
             className="block w-full rounded-md bg-indigo-600 px-3.5 py-2.5 text-center text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+            onClick={(e)=>saveLector(e)}
           >
             Guardar
           </button>
-          <button
-            type="button"
-            className="block w-full mt-3 rounded-md bg-gray-400 px-3.5 py-2.5 text-center text-sm font-semibold text-white shadow-sm hover:bg-gray-300 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-          >
-            Cancelar
-          </button>
-          
+           <Link to='/lectores'className="block w-full mt-3 rounded-md bg-gray-400 px-3.5 py-2.5 text-center text-sm font-semibold text-white shadow-sm hover:bg-gray-300 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">Cacelar</Link>
         </div>
       </form>
     </div>

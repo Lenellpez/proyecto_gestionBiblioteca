@@ -5,7 +5,8 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
+import ar.edu.unju.fi.Biblioteca.dto.LectorDto;
+import ar.edu.unju.fi.Biblioteca.enums.EstadoLector;
 import ar.edu.unju.fi.Biblioteca.exceptions.ManagerException;
 import ar.edu.unju.fi.Biblioteca.model.Asociado;
 import ar.edu.unju.fi.Biblioteca.model.Lector;
@@ -19,11 +20,18 @@ public class LectorService {
 	private ILectorRepository lectorRepository;
 	
     /**
-     * Guardar o actualizar  nuevo lector
-     * @param lector : lector con todos lus datos
+     * Guardar un nuevo lector basado en los datos proporcionados en un DTO.
+     *  @param lectorDto: DTO con los datos del lector.
      */
-    public void gestionLector(Lector lector)  {
-    	lectorRepository.save(lector);
+    public void gestionLector(LectorDto l)  {
+        // Asignación del tipo de lector utilizando una expresión ternaria 
+    	
+    	   Lector lector = "ASC".equalsIgnoreCase(l.getTipo()) ?
+                   new Asociado(l.getNombre(), l.getTelefono(), EstadoLector.NO_MULTADO, l.getNumero()) :
+                   "NO_ASC".equalsIgnoreCase(l.getTipo()) ?
+                           new NoAsociado(l.getNombre(), l.getTelefono(), EstadoLector.NO_MULTADO, l.getNumero()) :
+                           null;
+               lectorRepository.save(lector); 
     }
     
     /**
@@ -109,7 +117,7 @@ public class LectorService {
          if (lector!=null) {
              return lector;
          } else {
-             // Puedes manejar el caso en el que no se encuentra el lector, por ejemplo, lanzar una excepción
+             //caso en el que no se encuentra el lector, lanza una excepción
         	 throw new ManagerException ("El ID del lector no existe");
          }
     }

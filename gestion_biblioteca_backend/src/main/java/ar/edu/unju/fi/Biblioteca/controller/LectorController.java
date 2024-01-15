@@ -1,7 +1,6 @@
 package ar.edu.unju.fi.Biblioteca.controller;
 
 import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,11 +11,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
+import ar.edu.unju.fi.Biblioteca.dto.LectorDto;
 import ar.edu.unju.fi.Biblioteca.exceptions.ManagerException;
-import ar.edu.unju.fi.Biblioteca.model.Asociado;
 import ar.edu.unju.fi.Biblioteca.model.Lector;
-import ar.edu.unju.fi.Biblioteca.model.NoAsociado;
 import ar.edu.unju.fi.Biblioteca.service.LectorService;
 
 
@@ -34,10 +31,9 @@ public class LectorController {
 		 return ResponseEntity.ok(lectores);
 	 }
 	 
-	 
-	
+
 	@GetMapping("/{tipoLector}") 
-	public ResponseEntity<List<?>> getAsociado (@PathVariable("tipoLector") String tipoLector){
+	public ResponseEntity<List<?>> getLectoresbyTipo (@PathVariable("tipoLector") String tipoLector){
 		List<?> lectores = null;
 		if(tipoLector.equalsIgnoreCase("Asociado")) {
 			 lectores =lectorService.getAsociados();
@@ -47,25 +43,13 @@ public class LectorController {
 		}		
 		return ResponseEntity.ok(lectores);
 	}
-	  
-	  // Endpoint para crear un nuevo asociado
-    @PostMapping("/asociado")
-    public ResponseEntity<?> crearLector(@RequestBody Asociado asociado ) {
-        try {
-        	lectorService.gestionLector(asociado);
-            String mensaje = "El Lector Asociado se Guardo Correctemente";
-			return ResponseEntity.ok(mensaje);
-        } catch (ManagerException e) {
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
-        }
-    }
-    
+  
 	  // Endpoint para crear un nuevo no lector
-    @PostMapping("/noAsociado")
-    public ResponseEntity<?> crearLector(@RequestBody NoAsociado noAsociado ) {
+    @PostMapping("/lector")
+    public ResponseEntity<?> crearLector(@RequestBody LectorDto lectorDto ) {
         try {
-        	lectorService.gestionLector(noAsociado);
-            String mensaje = "El Lector No asociado se Guardo Correctemente";
+        	lectorService.gestionLector(lectorDto);
+            String mensaje = "El Lector se Guardo Correctemente";
 			return ResponseEntity.ok(mensaje);
         } catch (ManagerException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
