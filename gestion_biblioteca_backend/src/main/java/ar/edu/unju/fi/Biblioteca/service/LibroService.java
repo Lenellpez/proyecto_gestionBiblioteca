@@ -107,5 +107,12 @@ public class LibroService {
 		return libroRepository.count();
 	}
     
+    public Long contarLibrosDisponibles() {
+        return libroRepository.contarLibrosDisponibles();
+    }
+    
+    public Long contarLibrosNoDisponibles() {
+        return libroRepository.contarLibrosNoDisponibles();
+    }
 
 }

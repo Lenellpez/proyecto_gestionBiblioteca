@@ -17,4 +17,10 @@ public interface ILibroRepository   extends CrudRepository <Libro,Long>{
 	 public List<Libro> findByAutoresNombre(@Param("autorNombre") String autorNombre);
 	 
 	 public List<Libro> findByTituloIgnoreCase(String titulo);
+	 
+	 @Query("SELECT COUNT(l) FROM Libro l WHERE l.estado = 'DISPONIBLE'")
+	 Long contarLibrosDisponibles();
+	 
+	 @Query("SELECT COUNT(l) FROM Libro l WHERE l.estado = 'NO_DISPONIBLE'")
+	 Long contarLibrosNoDisponibles();
 }

@@ -30,7 +30,7 @@ public class LectorController {
 		 List<Lector> lectores = lectorService.getAll();
 		 return ResponseEntity.ok(lectores);
 	 }
-	 
+	 	 
 
 	@GetMapping("/{tipoLector}") 
 	public ResponseEntity<List<?>> getLectoresbyTipo (@PathVariable("tipoLector") String tipoLector){
@@ -82,6 +82,18 @@ public class LectorController {
     @GetMapping("/contarAll")
     public ResponseEntity<Long> contarLectores() {
         long cantidadLectores = lectorService.contar();
+        return ResponseEntity.ok(cantidadLectores);
+    }
+    
+    @GetMapping("/contarSocios")
+    public ResponseEntity<Long> contarAsc() {
+        long cantidadLectores = lectorService.contarAsociados();
+        return ResponseEntity.ok(cantidadLectores);
+    }
+ 
+    @GetMapping("/contarNoSocios")
+    public ResponseEntity<Long> contarNASC() {
+        long cantidadLectores = lectorService.contarNoAsociados();
         return ResponseEntity.ok(cantidadLectores);
     }
     

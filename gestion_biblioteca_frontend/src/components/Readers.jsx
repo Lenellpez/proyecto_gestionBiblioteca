@@ -1,6 +1,7 @@
 import React , {useState,useEffect} from 'react'
-import LectorService from '../services/LectorService';
-import { Link } from 'react-router-dom';
+import LectorService from '../services/LectorService'
+import { Link } from 'react-router-dom'
+import {PlusIcon,UsersIcon} from '@heroicons/react/24/outline'
 
  export default  function Readers () {
         const [lectores,setLectores]=useState([]);    
@@ -16,7 +17,10 @@ import { Link } from 'react-router-dom';
       <div className="p-4 m-3 ">
             <div className=" flex flex-col lg:flex-row justify-between items-center mb-4">
               <div className="text-left lg:w-2/3 mb-4 lg:mb-0">
-                <h2 className="text-lg font-semibold">Lectores</h2>
+              <h2 className="text-lg font-semibold flex items-center">
+                <span className="mr-2">Lectores</span>
+                <UsersIcon className="h-6 w-6" />
+              </h2>
                 <p className="text-sm text-gray-500">
                   Lista todos los lectores incluido su nombre, teléfono, libros prestados y estado
                 </p>
@@ -25,7 +29,15 @@ import { Link } from 'react-router-dom';
                 <button className="rounded-md bg-indigo-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
                   Buscar
                 </button>
-                <Link to='/add-Lectores' className="rounded-md bg-indigo-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">Agregar lector</Link>
+                <Link
+                  to='/add-Lectores'
+                  className="inline-block bg-indigo-600 hover:bg-indigo-500 focus:bg-indigo-500 focus:outline-none focus:ring focus:ring-indigo-300 focus:ring-opacity-50 transition-colors rounded-md px-4 py-2.5 text-sm font-semibold text-white shadow-sm"
+                >
+                  <div className="flex items-center">
+                    <PlusIcon className="h-5 w-5 mr-2" />
+                    <span>Agregar</span>
+                  </div>
+                </Link>
               </div>
             </div>
             <hr />

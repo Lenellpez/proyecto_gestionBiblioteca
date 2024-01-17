@@ -1,12 +1,12 @@
 package ar.edu.unju.fi.Biblioteca.controller;
 
 import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -18,6 +18,7 @@ import ar.edu.unju.fi.Biblioteca.exceptions.ManagerException;
 import ar.edu.unju.fi.Biblioteca.model.Libro;
 import ar.edu.unju.fi.Biblioteca.service.LibroService;
 
+@CrossOrigin(origins = "http://localhost:5173")
 @RestController
 @RequestMapping("/api/libro")
 public class LibroController {
@@ -71,4 +72,24 @@ public class LibroController {
 			return ResponseEntity.ok(libroBuscado);
 		}
 
+		
+	    @GetMapping("/contarLibrosDisponibles")
+	    public ResponseEntity<Long> contarLibrosDisponibles() {
+	        Long cantidadLibrosDisponibles = libroService.contarLibrosDisponibles();
+	        return ResponseEntity.ok(cantidadLibrosDisponibles);
+	    }
+
+	    @GetMapping("/contarLibrosPrestados")
+	    public ResponseEntity<Long> contarLibrosPrestados() {
+	        Long cantidadLibrosPrestados = libroService.contarLibrosNoDisponibles();
+	        return ResponseEntity.ok(cantidadLibrosPrestados);
+	    }
+	    
+	    @GetMapping("/contarAll")
+	    public ResponseEntity<Long> contarLectores() {
+	        long cantidadLibros = libroService.contar();
+	        return ResponseEntity.ok(cantidadLibros);
+	    }
+	    
+	    
 }

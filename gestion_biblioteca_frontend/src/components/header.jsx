@@ -1,3 +1,4 @@
+import LectorService from "../services/LectorService"
 const links = [
     { name: 'Cargar lector', href: '/lectores' },
     { name: 'Cargar libro', href: '#' },

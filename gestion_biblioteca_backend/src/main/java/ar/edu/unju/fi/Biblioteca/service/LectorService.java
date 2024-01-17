@@ -130,5 +130,21 @@ public class LectorService {
 		return lectorRepository.count();
 	}
     
+	/**
+	 * Contar la cantidad total de Lectores asociados.
+	 * @return Cantidad de socios
+	 */
+	public long contarAsociados() {
+		return lectorRepository.contarAsociados();
+	}
+	
+	/**
+	 * Contar la cantidad total de Lectores NO asociados.
+	 * @return Cantidad de no socios
+	 */
+	public long contarNoAsociados() {
+		return lectorRepository.contarNoAsociados();
+	}
+	
 	
 }

@@ -10,6 +10,7 @@ import ar.edu.unju.fi.Biblioteca.exceptions.ManagerException;
 import ar.edu.unju.fi.Biblioteca.model.Prestamo;
 import ar.edu.unju.fi.Biblioteca.service.PrestamoService;
 
+@CrossOrigin(origins = "http://localhost:5173")
 @RestController
 @RequestMapping("/api/prestamos")
 public class PrestamoController {
