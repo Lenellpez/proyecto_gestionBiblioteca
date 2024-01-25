@@ -1,43 +1,59 @@
 import { useState } from 'react'
 import { Link ,useNavigate} from 'react-router-dom';
 import LectorService from '../services/LectorService';
+import MyModal from './modal';
+import { ArrowUturnLeftIcon} from '@heroicons/react/24/outline'
 
+// Función de utilidad para generar clases condicionales
 function classNames(...classes) {
   return classes.filter(Boolean).join(' ')
 }
 
 export default function AddReaders() {
-
+  // Estados para manejar la información del formulario 
   const [nombre,setNombre]=useState('');
   const [apellido,setApellido]=useState('');
   const [telefono,setTelefono]=useState('');
   const [numero,setNumero]=useState(''); //el servidor se encargar de adm como cuil o nro socio 
 
+  const [isOpen, setIsOpen] = useState(false);   // Estado para controlar la visibilidad de la modal
+  const [modalTitle, setModalTitle] = useState('');
+  const [modalMessage, setModalMessage] = useState('');
+
   const navigate = useNavigate ();
   const [agreed, setAgreed] = useState(false)
   const [readerType, setReaderType] = useState('ASC');
 
+  // Función para manejar el cambio en el tipo de lector
   const handleReaderTypeChange = (event) => {
     setReaderType(event.target.value);
    // Limpiar los estados al cambiar el tipo de lector
    setNumero('');
   };
-
+  // Función para cerrar la modal
+  const closeModal = () => {
+    setIsOpen(false);
+  };
+   // Función para guardar el lector
   const saveLector=(e)=>{
     e.preventDefault();
     const nombreCompleto = `${nombre} ${apellido}`;
     const lector ={tipo:readerType,nombre:nombreCompleto,telefono,numero};
     LectorService.createLector(lector).then((response)=>{
-            console.log(response.data);
-            alert(response.data);
+            setModalTitle('Carga exitosa');
+            setModalMessage(response.data);
+            setIsOpen(true);
             navigate('/lectores');
     }).catch(error=>{
-        console.log(error);
+        setModalTitle('Error al cargar');
+        setModalMessage(
+          error.response ? error.response.data : 'Hubo un problema al cargar el lector. Por favor, inténtalo de nuevo.'
+        );
+        setIsOpen(true);
     })
   }
-
+// Estructura del componente JSX
   return (
-    
     <div className=" bg-white px-6 py-24 sm:py-32 lg:px-8">
       <div
         className="absolute inset-x-0 top-[-10rem] -z-10 transform-gpu overflow-hidden blur-3xl sm:top-[-20rem]"
@@ -156,9 +172,10 @@ export default function AddReaders() {
           >
             Guardar
           </button>
-           <Link to='/lectores'className="block w-full mt-3 rounded-md bg-gray-400 px-3.5 py-2.5 text-center text-sm font-semibold text-white shadow-sm hover:bg-gray-300 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">Cacelar</Link>
+           <Link to='/lectores'className="block w-full mt-3 rounded-md bg-gray-400 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-gray-300 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 flex items-center justify-center"><ArrowUturnLeftIcon className="h-4 w-4 mr-2" />Cacelar </Link>
         </div>
       </form>
+      <MyModal isOpen={isOpen} closeModal={closeModal} title={modalTitle} message={modalMessage} />
     </div>
   )
 }

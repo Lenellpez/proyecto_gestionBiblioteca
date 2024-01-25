@@ -8,7 +8,7 @@ export default  function Books (){
     const [libros,setLibros]=useState([]);    
     useEffect(()=>{
         LibroService.getLibros().then(response=>{
-        setLectores(response.data);
+        setLibros(response.data);
         console.log (response.data);
       }).catch(error=>{
         console.log(error);
@@ -28,9 +28,13 @@ export default  function Books (){
         </p>
       </div>
       <div className="flex items-center space-x-2 lg:space-x-4">
-        <button className="rounded-md bg-indigo-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
-          Buscar
-        </button>
+                <input
+                  type="text"
+                //  value={searchText}
+                 // onChange={handleSearch}
+                  className="rounded-md border border-gray-300 px-3.5 py-2.5 text-sm focus:outline-none focus:border-indigo-600"
+                  placeholder="Buscar libros"
+                />
                <Link
                   to='#'
                   className="inline-block bg-indigo-600 hover:bg-indigo-500 focus:bg-indigo-500 focus:outline-none focus:ring focus:ring-indigo-300 focus:ring-opacity-50 transition-colors rounded-md px-4 py-2.5 text-sm font-semibold text-white shadow-sm"
@@ -44,6 +48,7 @@ export default  function Books (){
     </div>
     <hr />
       <div className="overflow-hidden overflow-x-auto">
+        {libros.length > 0 ? (
       <table className="min-w-full divide-y divide-gray-200">
         <thead>
           <tr>
@@ -57,6 +62,9 @@ export default  function Books (){
               Editorial
             </th>
             <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+              Autor
+            </th>
+            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
               Tipo
             </th>
             <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
@@ -65,26 +73,34 @@ export default  function Books (){
             <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
               Estado
             </th>
+            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+              Acciones
+            </th>
           </tr>
         </thead>
         <tbody className="bg-white divide-y divide-gray-200">
           {libros.map((libro) => (
-            <tr key={person.id}>
+            <tr key={libro.id}>
               <td className="px-6 py-4 whitespace-nowrap">{libro.id}</td>
               <td className="px-6 py-4 whitespace-nowrap"> {libro.titulo}</td>
-              <td className="px-6 py-4 whitespace-nowrap ">{libro.editorial}</td>
+              <td className="px-6 py-4 whitespace-nowrap ">{libro.aditorial}</td>
+              <td className="px-6 py-4 whitespace-nowrap ">{libro.autor.nombre}</td>
               <td className="px-6 py-4 whitespace-nowrap">{libro.tipo }</td>
               <td className="px-6 py-4 whitespace-nowrap">{libro.anio }</td>
               <td className={`px-6 py-4 whitespace-nowrap ${libro.estado === 'PRESTADO' ? 'text-red-500' : ''}`}>
                 {libro.estado === 'PRESTADO' ? 'Prestado' : 'Disponible'}
               </td>
               <td className="px-6 py-4 whitespace-nowrap">
-                <a href="" className="font-medium text-indigo-600 hover:text-indigo-500">Editar</a>
+                <a href="" className="font-medium text-indigo-600 hover:bg-indigo-100 px-2 py-1 rounded">Editar</a>
+                <a href="" className="font-medium text-red-500 hover:bg-red-100 px-2 py-1 rounded">Eliminar</a>
               </td>
             </tr>
           ))}
         </tbody>
       </table> 
+        ):(
+          <p className="text-center text-gray-500">No se encontraron resultados.</p>
+        )}
       </div>
 </div>
  )

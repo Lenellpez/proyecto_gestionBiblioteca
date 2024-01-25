@@ -38,6 +38,14 @@ public class LibroService {
 		libroRepository.findAll().forEach(libros::add);
 		return libros;
 	}
+	
+	/**
+	 * listar  libros segun su estado (PRESTADO o DISPONIBLE)
+	 * @return lista de libros 
+	 */
+	public List<Libro> getByEstado(EstadoLibro estado){
+		return libroRepository.findByEstado(estado);
+	}
 
 	/**
 	 * realizar carga de un Libo

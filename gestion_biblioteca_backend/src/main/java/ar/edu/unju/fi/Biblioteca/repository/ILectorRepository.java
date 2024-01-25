@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
+import ar.edu.unju.fi.Biblioteca.enums.EstadoLector;
 import ar.edu.unju.fi.Biblioteca.model.Lector;
 
 @Repository
@@ -21,7 +22,7 @@ public interface ILectorRepository extends CrudRepository <Lector,Long>{
 	 Long contarNoAsociados();
 	
 	 List<Lector> findByNombreContainingIgnoreCase (String nombre);
-	
-
+	 
+	List<Lector> findByEstado (EstadoLector estado);
 
 }

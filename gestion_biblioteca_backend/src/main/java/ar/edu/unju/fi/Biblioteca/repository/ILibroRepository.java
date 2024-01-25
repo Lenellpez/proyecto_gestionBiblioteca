@@ -6,6 +6,7 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import ar.edu.unju.fi.Biblioteca.enums.EstadoLibro;
 import ar.edu.unju.fi.Biblioteca.model.Isbn;
 import ar.edu.unju.fi.Biblioteca.model.Libro;
 
@@ -18,9 +19,13 @@ public interface ILibroRepository   extends CrudRepository <Libro,Long>{
 	 
 	 public List<Libro> findByTituloIgnoreCase(String titulo);
 	 
+	 public List<Libro> findByEstado(EstadoLibro estado);
+	 
 	 @Query("SELECT COUNT(l) FROM Libro l WHERE l.estado = 'DISPONIBLE'")
 	 Long contarLibrosDisponibles();
 	 
 	 @Query("SELECT COUNT(l) FROM Libro l WHERE l.estado = 'NO_DISPONIBLE'")
 	 Long contarLibrosNoDisponibles();
+	 
+	 
 }

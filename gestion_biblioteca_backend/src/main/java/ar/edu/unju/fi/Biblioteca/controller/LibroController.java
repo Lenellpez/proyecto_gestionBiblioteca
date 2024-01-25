@@ -16,6 +16,7 @@ import ar.edu.unju.fi.Biblioteca.dto.IsbnDto;
 import ar.edu.unju.fi.Biblioteca.dto.LibroDto;
 import ar.edu.unju.fi.Biblioteca.exceptions.ManagerException;
 import ar.edu.unju.fi.Biblioteca.model.Libro;
+import ar.edu.unju.fi.Biblioteca.enums.EstadoLibro;
 import ar.edu.unju.fi.Biblioteca.service.LibroService;
 
 @CrossOrigin(origins = "http://localhost:5173")
@@ -30,6 +31,12 @@ public class LibroController {
 		 @GetMapping("/")
 		 public ResponseEntity<List<Libro>> getAll(){
 			List<Libro> libros = libroService.getAll();
+			return ResponseEntity.ok(libros);
+		 }
+		 
+		 @GetMapping("/estado/{estadoLibro}")
+		 public ResponseEntity<List<Libro>> getByEstado(@PathVariable("estadoLibro")EstadoLibro estadoLibro ){			 
+			List<Libro> libros = libroService.getByEstado(estadoLibro);
 			return ResponseEntity.ok(libros);
 		 }
 		 

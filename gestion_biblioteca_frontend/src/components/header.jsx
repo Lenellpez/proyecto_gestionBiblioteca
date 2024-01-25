@@ -1,18 +1,41 @@
-import LectorService from "../services/LectorService"
-const links = [
+import React, { useState, useEffect } from 'react';
+import LectorService  from "../services/LectorService";
+import LibroService from '../services/LibroService';
+
+export default  function Header(){
+
+  const [asociadosCount, setAsociadosCount] = useState(0);
+  const [noAsociadosCount, setNoAsociadosCount] = useState(0);
+  const [librosDisponiblesCount, setLibrosDisponiblesCount] = useState(0);
+  const [librosNoDisponiblesCount, setLibrosNoDisponiblesCount] = useState(0);
+  
+  useEffect(() => {
+    // Llamada al servicio lector al montar el componente
+    LectorService.contarAsociados()
+      .then(count => setAsociadosCount(count));
+    LectorService.contarNoAsociados()
+      .then(count => setNoAsociadosCount(count));
+        // Llamadas al servicio libro al montar el componente
+        LibroService.contarLibrosDisponibles()
+        .then(count => setLibrosDisponiblesCount(count));
+      LibroService.contarLibrosNoDisponibles()
+        .then(count => setLibrosNoDisponiblesCount(count));
+  
+  }, []); // El segundo argumento [] asegura que este efecto solo se ejecute una vez, equivalente a componentDidMount
+  
+  const links = [
     { name: 'Cargar lector', href: '/lectores' },
     { name: 'Cargar libro', href: '#' },
     { name: 'Prestar libro', href: '#' },
     { name: 'Devolver libro', href: '#' },
   ]
   const stats = [
-    { name: 'Asociados', value: '12' },
-    { name: 'No Asociados', value: '5' },
-    { name: 'Libros disponibles', value: '120+' },
-    { name: 'Libros prestados', value: '24' },
+    { name: 'Asociados', value: asociadosCount.toString() },
+    { name: 'No Asociados', value: noAsociadosCount.toString() },
+    { name: 'Libros disponibles', value:librosDisponiblesCount.toString() },
+    { name: 'Prestamos activos', value: librosNoDisponiblesCount.toString() },
   ]
 
-export default  function Header(){
     return(
         <div className="relative isolate overflow-hidden bg-gray-900 py-24 sm:py-32 h-screen">
         <img
@@ -48,7 +71,7 @@ export default  function Header(){
           <div className="mx-auto max-w-2xl lg:mx-0">
             <h2 className="text-4xl font-bold tracking-tight text-white sm:text-6xl">Gestion biblioteca</h2>
             <p className="mt-6 text-lg leading-8 text-gray-300">
-           Diseñada para la gestión de libros físicos proporciona a bibliotecarios realizar tareas clave de manera efectivalas para administrar eficientemente una biblioteca física. Con un enfoque en la facilidad de uso y la automatización.
+           Diseñada para la gestión de prestamos proporciona a bibliotecarios realizar tareas clave de manera efectivalas para administrar eficientemente una biblioteca física. Con un enfoque en la facilidad de uso y la automatización.
             </p>
           </div>
           <div className="mx-auto mt-10 max-w-2xl lg:mx-0 lg:max-w-none">

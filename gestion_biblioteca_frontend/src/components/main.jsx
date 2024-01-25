@@ -4,6 +4,8 @@ import Header from "./header"
 import Nav from "./nav"
 import AddReaders from "./addReaders"
 import Books from "./books"
+import Prestamo from "./prestamos"
+import AddPrestamo from "./addPrestamo"
 
 const main = () =>{
    return(
@@ -15,6 +17,8 @@ const main = () =>{
          <Route  path='/lectores' element={<Readers/>} > </Route>
          <Route path='/add-Lectores' element={<AddReaders/>} > </Route>
          <Route path='/libros' element={<Books/>}></Route>
+         <Route path='/prestamo' element={<Prestamo/>}></Route>
+         <Route path="/add-prestamos" element={<AddPrestamo/>}></Route>
          </Routes>
        </div>
        </BrowserRouter>

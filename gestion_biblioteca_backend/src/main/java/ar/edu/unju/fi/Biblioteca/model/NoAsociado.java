@@ -22,8 +22,16 @@ public class NoAsociado extends Lector {
 		this.nroCuil = nroCuil;
 	}
 
+	
+    public Integer getNroCuil() {
+		return nroCuil;
+	}
 
-    @Override
+	public void setNroCuil(Integer nroCuil) {
+		this.nroCuil = nroCuil;
+	}
+
+	@Override
     public int getMaxDiasPrestamo() {
         return 2;
     }

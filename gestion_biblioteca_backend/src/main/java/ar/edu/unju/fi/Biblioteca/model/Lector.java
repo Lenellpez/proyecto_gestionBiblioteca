@@ -29,7 +29,7 @@ public abstract class Lector {
 	
 	@Enumerated(EnumType.STRING) 
 	@Column(name="estado_lec")
-	private EstadoLector estado;
+	private EstadoLector estado;   //MULTADO ,NO_MULTADO;
 
 	public Lector() {
 		super();

@@ -24,14 +24,30 @@ public class LectorService {
      *  @param lectorDto: DTO con los datos del lector.
      */
     public void gestionLector(LectorDto l)  {
-        // Asignación del tipo de lector utilizando una expresión ternaria 
     	
+        if (l == null || l.getTipo() == null || l.getNombre() == null || l.getTelefono() == null || l.getNumero() == null) {
+            throw new IllegalArgumentException("Todos los campos son obligatorios.");
+        }
+    	  //uso expresiones ternarias para crear instancias de Asociado o NoAsociado según el valor de tipo en LectorDto
     	   Lector lector = "ASC".equalsIgnoreCase(l.getTipo()) ?
                    new Asociado(l.getNombre(), l.getTelefono(), EstadoLector.NO_MULTADO, l.getNumero()) :
                    "NO_ASC".equalsIgnoreCase(l.getTipo()) ?
                            new NoAsociado(l.getNombre(), l.getTelefono(), EstadoLector.NO_MULTADO, l.getNumero()) :
                            null;
                lectorRepository.save(lector); 
+    }
+    
+    public void actualizarLector(Long id , LectorDto lectorActualizado) throws ManagerException {
+    	  Lector lector=buscarLectorById(id);
+    	  lector.setNombre(lectorActualizado.getNombre());
+    	  lector.setTelefono(lectorActualizado.getTelefono());
+    }
+    
+    public String  eliminarLector(Long id) throws ManagerException {
+        Lector lector = buscarLectorById(id);
+        String nombreLector = lector.getNombre(); // Obtener el nombre antes de eliminar
+        lectorRepository.delete(lector);
+        return nombreLector;
     }
     
     /**
@@ -42,6 +58,14 @@ public class LectorService {
 		List<Lector> lectores = new ArrayList<>();
 		lectorRepository.findAll().forEach(lectores::add);
 		return lectores;
+	}
+	
+	 /**
+     *  buscar lectores segun su estado (MULTADO|NO_MULTADO)
+     * @return lista lectores 
+     */
+	public List<Lector> findByEstado(EstadoLector estado ){
+		return lectorRepository.findByEstado(estado);
 	}
 	
 	/**
@@ -109,17 +133,12 @@ public class LectorService {
     /**
      * busca lectores por id 
      * @param id  del lector a buscar
-     * @return lector buscado
-     * @throws ManagerException si el id del lector buscado no concide con ninguno registrado
+     * @return lector encotrado
+     * @throws ManagerException si el id no concide con ninguno registrado
      */
     public Lector buscarLectorById(Long id) throws ManagerException{
-         Lector lector = lectorRepository.findById(id).get();      
-         if (lector!=null) {
-             return lector;
-         } else {
-             //caso en el que no se encuentra el lector, lanza una excepción
-        	 throw new ManagerException ("El ID del lector no existe");
-         }
+         return lectorRepository.findById(id)
+                 .orElseThrow(() -> new ManagerException("El ID del lector no existe"));
     }
     
 	/**

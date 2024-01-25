@@ -7,7 +7,7 @@ const navigation = [
   { name: 'Menu', href: '/', current: true },
   { name: 'Adm lectores', href: '/lectores', current: false },
   { name: 'Adm libros', href: '/libros', current: false },
-  { name: 'Adm prestamos', href: '#', current: false },
+  { name: 'Adm prestamos', href: '/prestamo', current: false },
 ]
 
 function classNames(...classes) {
@@ -36,8 +36,8 @@ export default function Nav({ currentNavItem, handleNavigation }) {
                 <div className="flex flex-shrink-0 items-center">
                   <img
                     className="h-8 w-auto"
-                    src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=500"
-                    alt="Your Company"
+                    src="https://readu.io/media/images/book.original.png"
+                    alt="Bibliteca"
                   />
                 </div>
                 <div className="hidden sm:ml-6 sm:block">
